@@ -1,3 +1,5 @@
 node_modules
-.btc
-.eth
+.btc.result.json
+.eth.result.json
+.sol.result.json
+.all.result.json
