@@ -22,9 +22,9 @@ Generate particular wallets
 make <script> amount=<amount> output=<output-file>
 ```
 
-script - wallet type to generate (btc, eth, sol);
-amount - wallets amount, optional;
-output-file - output file name, optional;
+- script - wallet type to generate (btc, eth, sol);
+- amount - wallets amount, optional;
+- output-file - output file name, optional;
 
 Generate all wallets
 
@@ -32,4 +32,4 @@ Generate all wallets
 make gen amount=<amount> output=<output-file> networks=<networks>
 ```
 
-networks - coma separated list of networks, for instance btc,sol. Optional.
+- networks - coma separated list of networks, for instance btc,sol. Optional.
