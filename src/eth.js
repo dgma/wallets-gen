@@ -1,22 +1,6 @@
-const { create } = require("web3-eth-accounts");
-const { save } = require("./save");
+const ethers = require("ethers");
 
-const amount = process.env.AMOUNT || 1;
-
-const genEth = () =>
-  Array.from({ length: amount }).reduce((acc, _, i) => {
-    const keyPair = create();
-    acc.push({
-      addr: keyPair.address,
-      pk: keyPair.privateKey,
-    });
-    return acc;
-  }, []);
-
-module.exports = {
-  genEth,
+module.exports.genEth = (seed) => {
+  const hd = ethers.HDNodeWallet.fromSeed(Buffer.from(seed, "utf8"));
+  return hd.address;
 };
-
-if (require.main === module) {
-  save("eth", genEth());
-}

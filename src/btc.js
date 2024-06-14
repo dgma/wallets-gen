@@ -1,26 +1,16 @@
 const bitcoin = require("bitcoinjs-lib");
-const { ECPairFactory } = require("ecpair");
 const ecc = require("tiny-secp256k1");
-const { save } = require("./save");
+const { BIP32Factory } = require("bip32");
 
-const amount = process.env.AMOUNT || 1;
-const ECPair = ECPairFactory(ecc);
+const bip32 = BIP32Factory(ecc);
 
-const genBtc = () =>
-  Array.from({ length: amount }).reduce((acc, _, i) => {
-    const keyPair = ECPair.makeRandom();
-    acc.push({
-      addr: bitcoin.payments.p2wpkh({ pubkey: keyPair.publicKey }).address,
-      pub: keyPair.publicKey.toString("hex"),
-      pk: keyPair.toWIF(),
-    });
-    return acc;
-  }, []);
-
-module.exports = {
-  genBtc,
+module.exports.genBtc = (seed) => {
+  const root = bip32.fromSeed(
+    Buffer.from(seed, "utf8"),
+    bitcoin.networks.bitcoin
+  );
+  return bitcoin.payments.p2wpkh({
+    pubkey: root.derivePath("m/84'/0'/0'/0/0").publicKey,
+    network: bitcoin.networks.bitcoin,
+  }).address;
 };
-
-if (require.main === module) {
-  save("btc", genBtc());
-}

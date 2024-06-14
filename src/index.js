@@ -1,9 +1,14 @@
+const fs = require("fs");
 const { genBtc } = require("./btc");
 const { genEth } = require("./eth");
 const { genSol } = require("./sol");
-const { save } = require("./save");
+const { genTia, genAtom } = require("./cosmos");
+const bip39 = require("bip39");
 
-const networks = process.env.NETWORKS || "btc,eth,sol";
+const amount = process.env.AMOUNT || 1;
+const networks = process.env.NETWORKS || "btc,evm,sol,tia,atom";
+
+// "btc,evm,sol,tia,atom"
 
 console.log("generate for", networks);
 
@@ -11,14 +16,29 @@ const parsedNetworks = networks.split(",").filter((i) => i);
 
 const networksMap = {
   btc: genBtc,
-  eth: genEth,
+  evm: genEth,
   sol: genSol,
+  tia: genTia,
+  atom: genAtom,
 };
 
-const genAll = () =>
+const generate = () =>
+  Array.from({ length: amount }).reduce((acc) => {
+    // const mnemonic = bip39.generateMnemonic();
+    const mnemonic =
+      "choose margin unique almost fit quality smile young weather advice helmet anchor";
+    const seed = bip39.mnemonicToSeedSync(mnemonic);
+    acc.push({
+      mnemonicᵻ: mnemonic,
+      ...genAll(seed),
+    });
+    return acc;
+  }, []);
+
+const genAll = (seed) =>
   parsedNetworks.reduce((acc, ntw) => {
-    acc[ntw] = networksMap[ntw]();
+    acc[ntw] = networksMap[ntw](seed);
     return acc;
   }, {});
 
-save("all", genAll());
+fs.writeFileSync(".result.json", JSON.stringify(generate(), null, 2));
