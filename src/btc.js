@@ -1,16 +1,15 @@
 const bitcoin = require("bitcoinjs-lib");
-const ecc = require("tiny-secp256k1");
-const { BIP32Factory } = require("bip32");
-
-const bip32 = BIP32Factory(ecc);
+const { bip32secp256k1 } = require("./bip32");
 
 module.exports.genBtc = (seed) => {
-  const root = bip32.fromSeed(
-    Buffer.from(seed, "utf8"),
-    bitcoin.networks.bitcoin
-  );
-  return bitcoin.payments.p2wpkh({
-    pubkey: root.derivePath("m/84'/0'/0'/0/0").publicKey,
-    network: bitcoin.networks.bitcoin,
-  }).address;
+  const rootKey = bip32secp256k1
+    .fromSeed(seed, bitcoin.networks.bitcoin)
+    .derivePath("m/84'/0'/0'/0/0");
+  return {
+    address: bitcoin.payments.p2wpkh({
+      pubkey: rootKey.publicKey,
+      network: bitcoin.networks.bitcoin,
+    }).address,
+    pk: rootKey.toWIF(),
+  };
 };

@@ -1,6 +1,14 @@
-const { Keypair } = require("@solana/web3.js");
+const { getAddress } = require("micro-sol-signer");
+const slip10 = require("micro-key-producer/slip10.js");
 
 module.exports.genSol = (seed) => {
-  const keyPair = Keypair.fromSeed(Buffer.from(seed, "utf8").slice(0, 32));
-  return keyPair.publicKey.toString();
+  const hdPath = `m/44'/501'/0'/0'`;
+  const keyPair = slip10.HDKey.fromMasterSeed(seed.toString("hex")).derive(
+    hdPath
+  );
+
+  return {
+    address: getAddress(keyPair.privateKey),
+    pk: Buffer.from(keyPair.privateKey).toString("hex"),
+  };
 };

@@ -8,8 +8,6 @@ const bip39 = require("bip39");
 const amount = process.env.AMOUNT || 1;
 const networks = process.env.NETWORKS || "btc,evm,sol,tia,atom";
 
-// "btc,evm,sol,tia,atom"
-
 console.log("generate for", networks);
 
 const parsedNetworks = networks.split(",").filter((i) => i);
@@ -24,9 +22,7 @@ const networksMap = {
 
 const generate = () =>
   Array.from({ length: amount }).reduce((acc) => {
-    // const mnemonic = bip39.generateMnemonic();
-    const mnemonic =
-      "choose margin unique almost fit quality smile young weather advice helmet anchor";
+    const mnemonic = bip39.generateMnemonic();
     const seed = bip39.mnemonicToSeedSync(mnemonic);
     acc.push({
       mnemonicᵻ: mnemonic,
