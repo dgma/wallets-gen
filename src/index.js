@@ -37,4 +37,19 @@ const genAll = (seed) =>
     return acc;
   }, {});
 
-fs.writeFileSync(".result.json", JSON.stringify(generate(), null, 2));
+const extractPublicData = (wallet) =>
+  parsedNetworks.reduce((acc, ntw) => {
+    acc[ntw] = wallet[ntw].address;
+    return acc;
+  }, {});
+
+const save = () => {
+  const data = generate();
+  fs.writeFileSync(".wallets.json", JSON.stringify(data, null, 2));
+  fs.writeFileSync(
+    ".wallets.pub.json",
+    JSON.stringify(data.map(extractPublicData), null, 2)
+  );
+};
+
+save();

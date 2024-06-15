@@ -9,6 +9,6 @@ module.exports.genSol = (seed) => {
 
   return {
     address: getAddress(keyPair.privateKey),
-    pk: Buffer.from(keyPair.privateKey).toString("hex"),
+    pkᵻ: Buffer.from(keyPair.privateKey).toString("hex"),
   };
 };

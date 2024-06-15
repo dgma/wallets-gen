@@ -10,6 +10,6 @@ module.exports.genBtc = (seed) => {
       pubkey: rootKey.publicKey,
       network: bitcoin.networks.bitcoin,
     }).address,
-    pk: rootKey.toWIF(),
+    pkᵻ: rootKey.toWIF(),
   };
 };

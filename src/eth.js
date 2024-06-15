@@ -8,6 +8,6 @@ module.exports.genEth = (seed) => {
   ).derivePath(defaultPath);
   return {
     address: hd.address,
-    pk: hd.privateKey,
+    pkᵻ: hd.privateKey,
   };
 };

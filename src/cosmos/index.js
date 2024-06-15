@@ -20,7 +20,7 @@ const gen = (chain) => (seed) => {
       chain.addressPrefix,
       rawSecp256k1PubkeyToRawAddress(keyPair.publicKey)
     ),
-    pk: Buffer.from(keyPair.privateKey).toString("hex"),
+    pkᵻ: Buffer.from(keyPair.privateKey).toString("hex"),
   };
 };
 
